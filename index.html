@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewJeans Vault | Álbumes & Favoritos</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --nj-sky: #a8d8f0;
+      --nj-blush: #f7c6d9;
+      --nj-butter: #fff3b0;
+      --nj-dark: #181920;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #eef7fc 0%, #fdf0f5 50%, #f5f7ff 100%);
+      color: var(--nj-dark);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .auth-card {
+      max-width: 440px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 1.25rem;
+      box-shadow: 0 12px 32px rgba(24, 25, 32, 0.08);
+      background: #ffffff;
+    }
+
+    .album-card {
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: #ffffff;
+    }
+
+    .album-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(24, 25, 32, 0.1);
+    }
+
+    .album-card.is-favorite {
+      border: 2px solid #e6397a;
+      box-shadow: 0 10px 26px rgba(230, 57, 122, 0.18);
+    }
+
+    .album-cover {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background-color: #f1f3f5;
+    }
+
+    .star-btn {
+      border: none;
+      background: transparent;
+      font-size: 1.35rem;
+      padding: 0 2px;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .star-btn:hover {
+      transform: scale(1.18);
+    }
+
+    .badge-nj {
+      background: linear-gradient(90deg, var(--nj-sky), var(--nj-blush));
+      color: #181920;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== VISTA 1: LOGIN Y REGISTRO ==================== -->
+  <section id="authSection" class="container py-5 d-flex flex-column align-items-center justify-content-center min-vh-100">
+    <div class="text-center mb-4">
+      <span class="badge badge-nj rounded-pill px-3 py-2 mb-2">Bunnies Portal</span>
+      <h1 class="fw-bold mb-1">NewJeans Discography</h1>
+      <p class="text-muted mb-0">Inicia sesión o regístrate para calificar tu álbum favorito</p>
+    </div>
+
+    <div class="card auth-card w-100 p-4">
+      <!-- Pestañas Login / Registro -->
+      <ul class="nav nav-pills nav-fill mb-4 gap-2" id="authTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-semibold" id="tabLoginBtn" data-bs-toggle="pill" data-bs-target="#loginPane" type="button" role="tab">
+            Iniciar sesión
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold" id="tabRegisterBtn" data-bs-toggle="pill" data-bs-target="#registerPane" type="button" role="tab">
+            Registrarse
+          </button>
+        </li>
+      </ul>
+
+      <!-- Alertas de autenticación -->
+      <div id="authAlert" class="alert d-none py-2 small" role="alert"></div>
+
+      <div class="tab-content">
+        <!-- Formulario Login -->
+        <div class="tab-pane fade show active" id="loginPane" role="tabpanel">
+          <form id="loginForm" novalidate>
+            <div class="mb-3">
+              <label for="loginUsername" class="form-label fw-medium">Usuario</label>
+              <input type="text" class="form-control" id="loginUsername" placeholder="Ej. bunny_01" required />
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label fw-medium">Contraseña</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="btn btn-dark w-100 py-2 fw-semibold">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Entrar al menú
+            </button>
+          </form>
+        </div>
+
+        <!-- Formulario Registro -->
+        <div class="tab-pane fade" id="registerPane" role="tabpanel">
+          <form id="registerForm" novalidate>
+            <div class="mb-3">
+              <label for="regUsername" class="form-label fw-medium">Nombre de usuario</label>
+              <input type="text" class="form-control" id="regUsername" placeholder="Mínimo 3 caracteres" minlength="3" required />
+            </div>
+            <div class="mb-3">
+              <label for="regPassword" class="form-label fw-medium">Contraseña</label>
+              <input type="password" class="form-control" id="regPassword" placeholder="Mínimo 4 caracteres" minlength="4" required />
+            </div>
+            <div class="mb-3">
+              <label for="regConfirmPassword" class="form-label fw-medium">Confirmar contraseña</label>
+              <input type="password" class="form-control" id="regConfirmPassword" placeholder="Repite tu contraseña" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+              <i class="bi bi-person-plus me-1"></i> Crear cuenta
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA 2: MENÚ PRINCIPAL DE ÁLBUMES ==================== -->
+  <section id="appSection" class="d-none">
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+          <span class="badge badge-nj rounded-pill px-2 py-1">NJ</span>
+          <span>NewJeans Álbumes</span>
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+          <span class="text-muted small">
+            Hola, <strong id="currentUserLabel" class="text-dark"></strong>
+          </span>
+          <button id="logoutBtn" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <!-- Resumen de álbum favorito y filtro -->
+      <div class="row g-3 align-items-center mb-4">
+        <div class="col-md-7">
+          <div class="p-3 rounded-4 bg-white border shadow-sm d-flex align-items-center justify-content-between">
+            <div>
+              <div class="small text-muted fw-semibold text-uppercase">Tu álbum favorito actual</div>
+              <div id="favoriteSummary" class="fs-5 fw-bold text-danger mt-1">
+                Aún no eliges un favorito
+              </div>
+            </div>
+            <i class="bi bi-heart-fill text-danger fs-2"></i>
+          </div>
+        </div>
+
+        <div class="col-md-5">
+          <div class="p-3 rounded-4 bg-white border shadow-sm">
+            <label for="searchAlbumInput" class="form-label small text-muted fw-semibold mb-1">
+              Buscar álbum o EP
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+              <input
+                type="text"
+                id="searchAlbumInput"
+                class="form-control"
+                placeholder="Ej. Get Up, OMG, Supernatural..."
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado de carga / error de API -->
+      <div id="apiStatusBox" class="alert alert-info d-flex align-items-center gap-2" role="alert">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <span>Consultando API pública de música para obtener los lanzamientos de NewJeans...</span>
+      </div>
+
+      <!-- Grid de álbumes -->
+      <div id="albumsGrid" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4"></div>
+    </main>
+  </section>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Lógica de la aplicación -->
+  <script src="app.js"></script>
+</body>
+</html>
