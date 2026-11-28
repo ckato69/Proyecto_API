@@ -20,7 +20,7 @@ const searchAlbumInput = document.getElementById("searchAlbumInput");
 // Variables que cambian mientras se usa la app
 let usuarioActual = null;
 let albumes = [];
-let calificaciones = {}; // ejemplo: { "idAlbum": 5 }
+let calificaciones = {}; 
 let favoritoId = null;
 
 // Datos de las integrantes de NewJeans
@@ -248,7 +248,7 @@ async function cargarAlbumes() {
   apiStatusBox.className = "alert alert-info py-2 small";
   apiStatusBox.textContent = "Cargando lanzamientos de NewJeans...";
 
-  // 1) Intentar con MusicBrainz
+  
   try {
     const urlMB =
       "https://musicbrainz.org/ws/2/release-group?query=artist:NewJeans&fmt=json&limit=25";
@@ -301,7 +301,7 @@ async function cargarAlbumes() {
     console.log("Falló MusicBrainz, probando iTunes...", error);
   }
 
-  // 2) Respaldo con iTunes
+  
   try {
     const urlItunes =
       "https://itunes.apple.com/search?term=NewJeans&entity=album&attribute=artistTerm&limit=25";
@@ -357,7 +357,7 @@ async function cargarAlbumes() {
     console.log("Falló iTunes, usando lista local...", error);
   }
 
-  // 3) Lista local por si no hay internet o fallan las APIs
+  
   albumes = [
     {
       id: "ep1",
@@ -413,7 +413,7 @@ async function cargarAlbumes() {
   mostrarAlbumes();
 }
 
-// ==================== DIBUJAR ÁLBUMES EN PANTALLA ====================
+
 
 function dibujarEstrellas(idAlbum, puntuacionActual) {
   let html = "";
@@ -503,7 +503,7 @@ function mostrarAlbumes(textoFiltro = "") {
   albumsGrid.innerHTML = html;
 }
 
-// ==================== SECCIÓN DE MIEMBROS ====================
+
 
 function mostrarMiembros() {
   if (document.getElementById("membersSection")) return;
